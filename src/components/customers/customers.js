@@ -28,4 +28,13 @@ async function newCustomer(req, res, next) {
 
 }
 
-module.exports = {newCustomer}
+async function getAll(req, res, next) {
+    try {
+        const customers = await Customer.find({})
+        res.json(customers)
+    } catch(error) {
+        res.json(error)
+    }
+}
+
+module.exports = {newCustomer, getAll}
