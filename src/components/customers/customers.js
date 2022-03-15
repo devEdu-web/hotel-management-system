@@ -17,7 +17,7 @@ async function newCustomer(req, res, next) {
 
     try {
         await customer.save()
-        res.send(customer)
+        res.json(customer)
     } catch(error) {
         res.status(400).json({
             code: error.code,
@@ -37,4 +37,15 @@ async function getAll(req, res, next) {
     }
 }
 
-module.exports = {newCustomer, getAll}
+async function getCustomer(req, res, next) {
+    const customerId = req.params.id 
+
+    try {
+        const customer = await Customer.findOne({_id: customerId})
+        res.json(customer)
+    } catch(error) {
+        res.json(error)
+    }
+}
+
+module.exports = {newCustomer, getAll, getCustomer}
