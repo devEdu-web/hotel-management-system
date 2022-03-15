@@ -1,8 +1,9 @@
-import dotenv from 'dotenv';
-import {app} from './src/app.js';
-import database from './src/config/database.js'
+const dotenv = require('dotenv');
+const {app} = require('./src/app.js');
+const database = require('./src/config/database.js');
 
 dotenv.config()
+
 
 database.connect(process.env.DB_URL)
     .then(result => {

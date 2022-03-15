@@ -1,7 +1,7 @@
 {
   "name": "hotel-menagement-system",
   "description": "",
-  "type": "module",
+  "type": "commonjs",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
