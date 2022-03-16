@@ -17,6 +17,7 @@ async function newCustomer(req, res, next) {
 
     try {
         await customer.save()
+        // TODO: Set a response code
         res.json(customer)
     } catch(error) {
         res.status(400).json({
@@ -48,4 +49,23 @@ async function getCustomer(req, res, next) {
     }
 }
 
-module.exports = {newCustomer, getAll, getCustomer}
+async function updateCustomer(req, res, next) {
+
+}
+
+// This functionality was not tested
+async function deleteCustomer(req, res, next) {
+    const customerId = req.params.id
+    try {
+        await Customer.deleteOne({_id: customerId})
+        // TODO: Set a response code
+        res.json({
+            error: false,
+            message: 'User deleted'
+        })
+    } catch(error) {
+        res.json(error)
+    }
+}
+
+module.exports = {newCustomer, getAll, getCustomer, deleteCustomer}
