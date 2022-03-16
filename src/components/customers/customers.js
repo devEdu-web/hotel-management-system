@@ -1,4 +1,5 @@
 const Customer = require("./Customer.js");
+const createSchemaObjectModel = require('../../utils/update.utils')
 
 async function newCustomer(req, res, next) {
     const {firstName, lastName, email, phone, country, city, street, zipCode} = req.body
@@ -50,10 +51,17 @@ async function getCustomer(req, res, next) {
 }
 
 async function updateCustomer(req, res, next) {
+    const updatedInfo = createSchemaObjectModel(req.body)
+    const customerId = req.params.id
 
+    try {
+        await Customer.findByIdAndUpdate({_id: customerId}, updatedInfo)
+        res.send('updated')
+    } catch(error){
+        res.json(error)
+    }
 }
 
-// This functionality was not tested
 async function deleteCustomer(req, res, next) {
     const customerId = req.params.id
     try {
@@ -68,4 +76,4 @@ async function deleteCustomer(req, res, next) {
     }
 }
 
-module.exports = {newCustomer, getAll, getCustomer, deleteCustomer}
+module.exports = {newCustomer, getAll, getCustomer, deleteCustomer, updateCustomer}
