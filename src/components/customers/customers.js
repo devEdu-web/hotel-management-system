@@ -19,10 +19,16 @@ async function newCustomer(req, res, next) {
     try {
         await customer.save()
         // TODO: Set a response code
-        res.json(customer)
+        res.status(201).json({
+            error: false,
+            responseCode: 201,
+            message: 'Customer created',
+            elementInserted: customer
+        })
     } catch(error) {
-        res.status(400).json({
-            code: error.code,
+        res.json({
+            error: true,
+            errorCode: error.code,
             message: 'Email already exists.'
         })
     }
@@ -35,7 +41,10 @@ async function getAll(req, res, next) {
         const customers = await Customer.find({})
         res.json(customers)
     } catch(error) {
-        res.json(error)
+        res.json({
+            error: true,
+            message: error.message
+        })
     }
 }
 
@@ -46,7 +55,10 @@ async function getCustomer(req, res, next) {
         const customer = await Customer.findOne({_id: customerId})
         res.json(customer)
     } catch(error) {
-        res.json(error)
+        res.json({
+            error: true,
+            message: error.message
+        })
     }
 }
 
@@ -55,10 +67,17 @@ async function updateCustomer(req, res, next) {
     const customerId = req.params.id
 
     try {
-        await Customer.findByIdAndUpdate({_id: customerId}, updatedInfo)
-        res.send('updated')
+        const updatedCustomer = await Customer.findByIdAndUpdate({_id: customerId}, updatedInfo, {new: true})
+        res.status(201).json({
+            error: false,
+            message: 'Customer updated.',
+            customerUpdated: updatedCustomer
+        })
     } catch(error){
-        res.json(error)
+        res.json({
+            error: true,
+            error: error.message
+        })
     }
 }
 
@@ -72,7 +91,10 @@ async function deleteCustomer(req, res, next) {
             message: 'User deleted'
         })
     } catch(error) {
-        res.json(error)
+        res.json({
+            error: true,
+            message: error.message
+        })
     }
 }
 
