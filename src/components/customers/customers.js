@@ -18,7 +18,6 @@ async function newCustomer(req, res, next) {
 
     try {
         await customer.save()
-        // TODO: Set a response code
         res.status(201).json({
             error: false,
             responseCode: 201,
@@ -85,7 +84,6 @@ async function deleteCustomer(req, res, next) {
     const customerId = req.params.id
     try {
         await Customer.deleteOne({_id: customerId})
-        // TODO: Set a response code
         res.json({
             error: false,
             message: 'User deleted'
