@@ -2,15 +2,15 @@ const {Schema} = require('mongoose')
 const mongoose = require('mongoose')
 
 const roomSchema = new Schema({
+    roomType: String, // Single, Double, Triple, Suite, King, Queen
     pricePerDay: Number,
     maxPeople: Number,
+    status: String,
     description: {
         bedrooms: Number,
         bathrooms: Number,
         livingRoom: Number,
-        maxPeople: Number
     },
-    status: String
-})
+}, {versionKey: false})
 
 module.exports = mongoose.model('Room', roomSchema)

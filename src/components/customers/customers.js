@@ -20,7 +20,6 @@ async function newCustomer(req, res, next) {
         await customer.save()
         res.status(201).json({
             error: false,
-            responseCode: 201,
             message: 'Customer created',
             elementInserted: customer
         })
