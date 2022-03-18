@@ -42,4 +42,17 @@ async function getAll(req , res, next) {
     }
 }
 
-module.exports = {newRoom, getAll}
+async function getRoom(req, res, next) {
+    const roomId = req.params.id
+    try {
+        const room = await Room.findOne({_id: roomId})
+        res.json(room)
+    } catch(error) {
+        res.json({
+            error: true,
+            message: error.message
+        })
+    }
+}
+
+module.exports = {newRoom, getAll, getRoom}
