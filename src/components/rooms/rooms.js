@@ -30,4 +30,16 @@ async function newRoom(req, res, next) {
     }
 }
 
-module.exports = {newRoom}
+async function getAll(req , res, next) {
+    try {
+        const rooms = await Room.find({})
+        res.json(rooms)
+    } catch(error) {
+        res.send({
+            error: true,
+            message: error.message
+        })
+    }
+}
+
+module.exports = {newRoom, getAll}
