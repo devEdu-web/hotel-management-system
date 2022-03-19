@@ -73,7 +73,25 @@ async function updateRoom(req, res, next) {
             error: error.message
         })
     }
+}
+
+async function deleteRoom(req, res, next) {
+    const roomId = req.params.id
+    try {
+        await Room.deleteOne({_id: roomId})
+        res.json({
+            error: false,
+            message: 'Room deleted'
+        })
+    } catch(error) {
+        res.json({
+            error: true,
+            message: error.message
+        })
+    }
+
+    
 
 }
 
-module.exports = {newRoom, getAll, getRoom, updateRoom}
+module.exports = {newRoom, getAll, getRoom, updateRoom, deleteRoom}
