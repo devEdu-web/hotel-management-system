@@ -31,4 +31,16 @@ async function newEmployee (req, res, next) {
 
 }
 
-module.exports = {newEmployee}
+async function getAll(req, res, next) {
+    try {
+        const employee = await Employee.find({})
+        res.json(employee)
+    } catch(error) {
+        res.json({
+            error: true,
+            message: error.message
+        })
+    }
+}
+
+module.exports = {newEmployee, getAll}
