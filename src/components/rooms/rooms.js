@@ -1,4 +1,5 @@
 const Room = require('./Room')
+const GenerateObject = require('../../utils/update.utils')
 
 async function newRoom(req, res, next) {
     const {roomType, pricePerDay, maxPeople, bedrooms, bathrooms, livingRoom, status} = req.body
@@ -55,4 +56,24 @@ async function getRoom(req, res, next) {
     }
 }
 
-module.exports = {newRoom, getAll, getRoom}
+async function updateRoom(req, res, next) {
+    const roomId = req.params.id
+    const noEmptyObject = GenerateObject.removeEmptyFields(req.body)
+    const finalObject = GenerateObject.addDescriptionObject(noEmptyObject)
+    try {
+        const updatedRoom = await Room.findByIdAndUpdate({_id: roomId}, finalObject, {new: true})
+        res.status(201).json({
+            error: false,
+            message: 'Room updated.',
+            updatedRoom,
+        })
+    } catch(error){
+        res.json({
+            error: true,
+            error: error.message
+        })
+    }
+
+}
+
+module.exports = {newRoom, getAll, getRoom, updateRoom}
