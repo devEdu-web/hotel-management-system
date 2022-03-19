@@ -12,6 +12,6 @@ const employeeSchema = new Schema({
         street: String,
         zipCode: Number
     }
-})
+}, {versionKey: false})
 
 module.exports = mongoose.model('Employee', employeeSchema)

@@ -8,4 +8,4 @@ router.post('/new', newCustomer)
 router.delete('/delete/:id', deleteCustomer)
 router.put('/update/:id', updateCustomer)
 
-module.exports = {router}
+module.exports = router
