@@ -1,5 +1,5 @@
 const Customer = require("./Customer.js");
-const createSchemaObjectModel = require('../../utils/update.utils')
+const GenerateObject = require('../../utils/update.utils')
 
 async function newCustomer(req, res, next) {
     const {firstName, lastName, email, phone, country, city, street, zipCode} = req.body
@@ -61,11 +61,13 @@ async function getCustomer(req, res, next) {
 }
 
 async function updateCustomer(req, res, next) {
-    const updatedInfo = createSchemaObjectModel(req.body)
     const customerId = req.params.id
+    // TODO: Find out why this two constants is returning the same object
+    const noEmptyObject = GenerateObject.removeEmptyFields(req.body)
+    const finalObject = GenerateObject.addAddressObject(noEmptyObject)
 
     try {
-        const updatedCustomer = await Customer.findByIdAndUpdate({_id: customerId}, updatedInfo, {new: true})
+        const updatedCustomer = await Customer.findByIdAndUpdate({_id: customerId}, finalObject, {new: true})
         res.status(201).json({
             error: false,
             message: 'Customer updated.',
