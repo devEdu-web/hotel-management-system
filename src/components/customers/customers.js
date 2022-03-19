@@ -87,7 +87,7 @@ async function deleteCustomer(req, res, next) {
         await Customer.deleteOne({_id: customerId})
         res.json({
             error: false,
-            message: 'User deleted'
+            message: 'Customer deleted'
         })
     } catch(error) {
         res.json({
