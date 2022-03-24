@@ -1,8 +1,9 @@
 class GenerateObject {
-    // constructor(object) {
-    //     this.object = object
-    // }
-
+    /**
+     * 
+     * @param {Object} object 
+     * @returns Object
+     */
     static removeEmptyFields(object) {
         const newObject = {}
         for (let [key, value] of Object.entries(object)) {
@@ -18,7 +19,6 @@ class GenerateObject {
                     }
                 }
             }
-            
         }
         
         // If the object has a field that is also an object, this delete the empty fields of that object too
@@ -32,6 +32,12 @@ class GenerateObject {
         
         return newObject
     }
+
+    /**
+     * 
+     * @param {Object} object 
+     * @returns Object
+     */
 
     static addAddressObject(object) {
         let newObject = object
@@ -52,6 +58,12 @@ class GenerateObject {
         return newObject
 
     }
+
+    /**
+     * 
+     * @param {Object} object 
+     * @returns Object
+     */
 
     static addDescriptionObject(object) {
         let newObject = object

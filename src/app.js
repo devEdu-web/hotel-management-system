@@ -2,6 +2,7 @@ const express = require("express");
 const customers = require("./routes/customers.js");
 const rooms = require('./routes/rooms.js')
 const employees = require('./routes/employees')
+const reservations = require('./routes/reservations')
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use('/customers', customers)
 app.use('/rooms', rooms)
 app.use('/employees', employees)
+app.use('/reservations', reservations)
 
 /*
 Room and Customer controller
