@@ -60,23 +60,59 @@ async function getCustomer(req, res, next) {
     }
 }
 
-async function updateCustomer(req, res, next) {
+async function updateCustomerInfo(req, res, next) {
     const customerId = req.params.id
-    // TODO: Check if the user has a reservation in his name, if so, update the name in the reservation too
+    // TODO: Check if the user has a reservation in his name, if so, update the name in the reservation
     const noEmptyObject = GenerateObject.removeEmptyFields(req.body)
-    const finalObject = GenerateObject.addAddressObject(noEmptyObject)
 
     try {
-        const updatedCustomer = await Customer.findByIdAndUpdate({_id: customerId}, finalObject, {new: true})
+        const updatedCustomer = await Customer.findByIdAndUpdate(
+            {_id: customerId}, 
+            {...noEmptyObject}, 
+            {new: true}
+        )
         res.status(201).json({
             error: false,
-            message: 'Customer updated.',
             customerUpdated: updatedCustomer
         })
     } catch(error){
         res.json({
             error: true,
             error: error.message
+        })
+    }
+}
+
+async function updateCustomerAddress(req, res, next) {
+    const customerId = req.params.id
+    const noEmptyObject = GenerateObject.removeEmptyFields(req.body)
+    try {
+
+        if(noEmptyObject.country) {
+            await Customer.updateOne({_id: customerId}, {$set: {"address.country": noEmptyObject.country}})
+        }
+
+        if(noEmptyObject.city) {
+            await Customer.updateOne({_id: customerId}, {$set: {"address.city": noEmptyObject.city}})
+        }
+
+        if(noEmptyObject.street) {
+            await Customer.updateOne({_id: customerId}, {$set: {"address.street": noEmptyObject.street}})
+        }
+
+        if(noEmptyObject.zipCode) {
+            await Customer.updateOne({_id: customerId}, {$set: {"address.zipCode": noEmptyObject.zipCode}})
+        }
+
+        res.status(201).json({
+            error: false,
+            message: 'Customer updated'
+        })
+
+    } catch(error) {
+        res.json({
+            error: true,
+            message: error.message
         })
     }
 }
@@ -97,4 +133,4 @@ async function deleteCustomer(req, res, next) {
     }
 }
 
-module.exports = {newCustomer, getAll, getCustomer, deleteCustomer, updateCustomer}
+module.exports = {newCustomer, getAll, getCustomer, deleteCustomer, updateCustomerInfo, updateCustomerAddress}
