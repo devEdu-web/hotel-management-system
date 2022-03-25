@@ -62,7 +62,7 @@ async function getCustomer(req, res, next) {
 
 async function updateCustomer(req, res, next) {
     const customerId = req.params.id
-    // TODO: Find out why this two constants is returning the same object
+    // TODO: Check if the user has a reservation in his name, if so, update the name in the reservation too
     const noEmptyObject = GenerateObject.removeEmptyFields(req.body)
     const finalObject = GenerateObject.addAddressObject(noEmptyObject)
 

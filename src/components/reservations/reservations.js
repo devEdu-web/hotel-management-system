@@ -1,6 +1,7 @@
 const Reservation = require('./Reservation')
 const Room = require('../rooms/Room')
 const calculatePrice = require('../../utils/reservationPrice.utils')
+const GenerateObject = require('../../utils/update.utils')
 
 async function newReservation(req, res, next) {
     const {checkIn, checkOut, customerEmail, roomId} = req.body
@@ -43,4 +44,39 @@ async function getAll(req, res, next){
     }
 }
 
-module.exports = {newReservation, getAll}
+async function getReservation(req, res, next) {
+    const reservationId = req.params.id
+    try {
+        const reservation = await Reservation.findOne({_id: reservationId})
+        res.json(reservation)
+    } catch(error){
+        res.json({
+            error: true,
+            message: error.message
+        })
+    }
+}
+
+/**
+
+Update reservation will not be implemented, the client will have to delete the existing reservation and create another one.
+
+*/
+
+async function deleteReservation(req, res, next) {
+    const reservationId = req.params.id
+    try {
+        await Reservation.deleteOne({_id: reservationId})
+        res.json({
+            error: false,
+            message: 'Reservation Deleted'
+        })
+    } catch(error) {
+        res.json({
+            error: true,
+            message: error.message
+        })
+    }
+}
+
+module.exports = {newReservation, getAll, getReservation, deleteReservation}
