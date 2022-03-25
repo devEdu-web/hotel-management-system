@@ -22,7 +22,6 @@ async function newReservation(req, res, next) {
             reservation: savedReservation
         })
 
-
     } catch(error) {
         res.json({
             error:true,
@@ -32,4 +31,16 @@ async function newReservation(req, res, next) {
 
 }
 
-module.exports = {newReservation}
+async function getAll(req, res, next){
+    try {
+        const reservations = await Reservation.find({})
+        res.json(reservations)
+    } catch(error) {
+        res.json({
+            error: true,
+            message: error.message
+        })
+    }
+}
+
+module.exports = {newReservation, getAll}

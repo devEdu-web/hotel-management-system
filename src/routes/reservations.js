@@ -1,8 +1,9 @@
-const {newReservation} = require('../components/reservations/reservations')
+const {newReservation, getAll} = require('../components/reservations/reservations')
 const router = require('express').Router()
 
 
 router.post('/new', newReservation)
+router.get('/all', getAll)
 
 
 
