@@ -59,18 +59,42 @@ async function getRoom(req, res, next) {
 async function updateRoom(req, res, next) {
     const roomId = req.params.id
     const noEmptyObject = GenerateObject.removeEmptyFields(req.body)
-    const finalObject = GenerateObject.addDescriptionObject(noEmptyObject)
     try {
-        const updatedRoom = await Room.findByIdAndUpdate({_id: roomId}, finalObject, {new: true})
+        // Create the document with the description field in the database
+        // The description field is overwritten by the incoming object
+        await Room.updateOne({_id: roomId}, {...noEmptyObject}, {new: true})
+        
+        // Update the description fields
+        if(noEmptyObject.bedrooms) {
+            await Room.updateOne(
+                {_id: roomId},
+                {$set: {"description.bedrooms": noEmptyObject.bedrooms}}
+            )
+        }
+
+        if(noEmptyObject.bathrooms) {
+            await Room.updateOne(
+                {_id: roomId},
+                {$set: {"description.bathrooms": noEmptyObject.bathrooms}}
+            )
+        }
+
+        if(noEmptyObject.livingRoom) {
+            await Room.updateOne(
+                {_id: roomId},
+                {$set: {"description.livingRoom": noEmptyObject.livingRoom}}
+            )
+        }
+
         res.status(201).json({
             error: false,
             message: 'Room updated.',
-            updatedRoom,
         })
+
     } catch(error){
         res.json({
             error: true,
-            error: error.message
+            message: error.message
         })
     }
 }
