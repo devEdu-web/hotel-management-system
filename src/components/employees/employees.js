@@ -57,18 +57,16 @@ async function getEmployee(req, res, next) {
 
 }
 
-async function updateEmployee(req, res, next) {
+async function updateEmployeeInfo(req, res, next) {
     const employeeId = req.params.id
-    // TODO: Find out why this two constants is returning the same object
     const noEmptyObject = GenerateObject.removeEmptyFields(req.body)
-    const finalObject = GenerateObject.addAddressObject(noEmptyObject)
     
     try {
-        const updatedEmployee = await Employee.findOneAndUpdate({_id: employeeId}, finalObject, {new: true})
+        const updatedInfo = await Employee.updateOne({_id: employeeId}, {...noEmptyObject}, {new: true})
+        console.log(noEmptyObject)
         res.status(201).json({
             error: false,
             message: 'Employee updated',
-            employeeUpdated: updatedEmployee
         })
     } catch(error) {
         res.json({
@@ -77,6 +75,41 @@ async function updateEmployee(req, res, next) {
         })
     }
 
+}
+
+async function updateEmployeeAddress(req, res, next) {
+    const employeeId = req.params.id
+    const noEmptyObject = GenerateObject.removeEmptyFields(req.body)
+    console.log(noEmptyObject)
+    try {
+
+        if(noEmptyObject.country) {
+            await Employee.updateOne({_id: employeeId}, {$set: {"address.country": noEmptyObject.country}})
+        }
+
+        if(noEmptyObject.city) {
+            await Employee.updateOne({_id: employeeId}, {$set: {"address.city": noEmptyObject.city}})
+        }
+
+        if(noEmptyObject.street) {
+            await Employee.updateOne({_id: employeeId}, {$set: {"address.street": noEmptyObject.street}})
+        }
+
+        if(noEmptyObject.zipCode) {
+            await Employee.updateOne({_id: employeeId}, {$set: {"address.zipCode": noEmptyObject.zipCode}})
+        }
+
+        res.status(201).json({
+            error: false,
+            message: 'Employee updated'
+        })
+
+    } catch(error) {
+        res.json({
+            error:true,
+            message: error.message
+        })
+    }
 }
 
 async function deleteEmployee(req, res, next) {
@@ -95,4 +128,4 @@ async function deleteEmployee(req, res, next) {
     }
 }
 
-module.exports = {newEmployee, getAll, getEmployee, updateEmployee, deleteEmployee}
+module.exports = {newEmployee, getAll, getEmployee, updateEmployeeInfo, updateEmployeeAddress, deleteEmployee}

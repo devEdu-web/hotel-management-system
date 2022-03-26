@@ -66,10 +66,9 @@ async function updateCustomerInfo(req, res, next) {
     const noEmptyObject = GenerateObject.removeEmptyFields(req.body)
 
     try {
-        const updatedCustomer = await Customer.findByIdAndUpdate(
+        const updatedCustomer = await Customer.updateOne(
             {_id: customerId}, 
             {...noEmptyObject}, 
-            {new: true}
         )
         res.status(201).json({
             error: false,
