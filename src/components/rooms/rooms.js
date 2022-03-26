@@ -2,7 +2,7 @@ const Room = require('./Room')
 const GenerateObject = require('../../utils/update.utils')
 
 async function newRoom(req, res, next) {
-    const {roomType, pricePerDay, maxPeople, bedrooms, bathrooms, livingRoom, status} = req.body
+    const {roomType, pricePerHour, maxPeople, bedrooms, bathrooms, livingRoom, status} = req.body
     const room = new Room({
         roomType,
         pricePerDay,

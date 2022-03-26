@@ -14,7 +14,7 @@ async function newReservation(req, res, next) {
             checkOut: new Date(checkOut),
             customerEmail,
             roomId,
-            reservationPrice: calculatePrice(checkIn, checkOut, currentRoom.pricePerDay)
+            reservationPrice: calculatePrice(checkIn, checkOut, currentRoom.pricePerHour)
         })
 
         const savedReservation = await reservation.save()
@@ -60,6 +60,7 @@ async function getReservation(req, res, next) {
 /**
 
 Update reservation will not be implemented, the client will have to delete the existing reservation and create another one.
+If it was implemented the controller would have to fetch the room to verify its price per hour
 
 */
 

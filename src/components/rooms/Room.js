@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 const roomSchema = new Schema({
     roomType: String, // Single, Double, Triple, Suite, King, Queen
-    pricePerDay: Number,
+    pricePerHour: Number,
     maxPeople: Number,
     status: String,
     description: {
