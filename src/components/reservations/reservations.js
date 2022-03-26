@@ -1,14 +1,20 @@
 const Reservation = require('./Reservation')
 const Room = require('../rooms/Room')
+const Customer = require('../customers/Customer')
 const calculatePrice = require('../../utils/reservationPrice.utils')
-const GenerateObject = require('../../utils/update.utils')
 
 async function newReservation(req, res, next) {
     const {checkIn, checkOut, customerEmail, roomId} = req.body
 
     try {
-        // TODO: Validate if the user exist by his email.
+        const customer = await Customer.findOne({email: customerEmail})
         const currentRoom = await Room.findOne({_id: roomId})
+        if(!customer) {
+            return res.json({
+                error: true,
+                message: 'Customer does not exist.'
+            })
+        }
         const reservation = new Reservation({
             checkIn: new Date(checkIn),
             checkOut: new Date(checkOut),
