@@ -1,5 +1,6 @@
 const Customer = require("./Customer.js");
 const GenerateObject = require('../../utils/update.utils')
+const Reservation = require('../reservations/Reservation')
 
 async function newCustomer(req, res, next) {
     const {firstName, lastName, email, phone, country, city, street, zipCode} = req.body
@@ -62,10 +63,16 @@ async function getCustomer(req, res, next) {
 
 async function updateCustomerInfo(req, res, next) {
     const customerId = req.params.id
-    // TODO: Check if the user has a reservation in his name, if so, update the name in the reservation
     const noEmptyObject = GenerateObject.removeEmptyFields(req.body)
-
+    
     try {
+        // Update user email in the reservations collection
+        const customer = await Customer.findOne({_id: customerId})
+        const customerReservations = await Reservation.find({customerEmail: customer.email})
+        if(customerReservations.length > 0) {
+            await Reservation.updateMany({customerEmail: customer.email}, {customerEmail: req.body.email})
+        }
+
         const updatedCustomer = await Customer.updateOne(
             {_id: customerId}, 
             {...noEmptyObject}, 
