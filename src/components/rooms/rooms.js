@@ -1,5 +1,6 @@
 const Room = require('./Room')
 const GenerateObject = require('../../utils/update.utils')
+const Reservation = require('../reservations/Reservation')
 
 async function newRoom(req, res, next) {
     const {roomType, pricePerHour, maxPeople, bedrooms, bathrooms, livingRoom, status} = req.body
@@ -46,6 +47,11 @@ async function getAll(req , res, next) {
 async function getRoom(req, res, next) {
     const roomId = req.params.id
     try {
+        const reservation = await Reservation.findOne({roomId})
+        if(!reservation) {
+            const updatedRoom = await Room.findOneAndUpdate({_id: roomId}, {status: 'available'}, {new: true})
+            return res.json(updatedRoom)
+        }
         const room = await Room.findOne({_id: roomId})
         res.json(room)
     } catch(error) {

@@ -23,10 +23,11 @@ async function newReservation(req, res, next) {
             reservationPrice: calculatePrice(checkIn, checkOut, currentRoom.pricePerHour)
         })
 
-        const savedReservation = await reservation.save()
+        await reservation.save()
+        await Room.updateOne({_id: roomId}, {status: 'unavailable'})
         res.status(201).json({
             error: false,
-            reservation: savedReservation
+            message: 'Reservation created.'
         })
 
     } catch(error) {

@@ -8,7 +8,10 @@ const reservationSchema = new Schema({
     },
     checkOut: Date,
     customerEmail: String,
-    roomId: String,
+    roomId: {
+        type: String,
+        unique: true
+    },
     reservationPrice: Number
 })
 
