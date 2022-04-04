@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-dotenv.config()
+dotenv.config();
 
 async function connect(url) {
     try {
-        await mongoose.connect(url, {autoIndex: true})
+        await mongoose.connect(url, { autoIndex: true });
         console.log('Connected to database');
-    } catch(error) {
-        throw error
+    } catch (error) {
+        throw error;
     }
 }
 
-module.exports = {connect}
+module.exports = { connect };
